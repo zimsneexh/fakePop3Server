@@ -172,6 +172,8 @@ def handleQuit(data, files):
         global delList
         for (i, item) in delList.iteritems():
                 os.remove(item)
+
+	delList = {}
         return "+OK pypopper2 POP3 server signing off."
 
 def handleRst(data, files):
