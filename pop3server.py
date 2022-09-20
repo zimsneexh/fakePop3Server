@@ -60,8 +60,11 @@ class Message(object):
                         try:
                                 self.data = data = msg.read()
                                 self.size = len(data)
-                                self.top, bot = data.split("\n\n", 1)
+                                self.top, bot = data.split("\n", 1)
                                 self.bot = bot.split("\n")
+
+                        except Exception as e:
+                            print("fuck, {}".format(e))
                         finally:
                                 msg.close()
 
@@ -71,7 +74,7 @@ class List(object):
         def __init__(self, dir):
                 files = {}
                 for (i,filename) in enumerate(os.listdir(dir)):
-                        files[i+1] = dir+filename
+                        files[i+1] = "./"+dir+"/"+filename
 
                 self.files = files
 
@@ -200,6 +203,7 @@ dispatch = dict(
 def serve(host, port, dir):
     assert os.path.exists(dir)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind((host, port))
     try:
         if host:
