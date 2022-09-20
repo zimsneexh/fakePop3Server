@@ -48,6 +48,7 @@ class ChatterboxConnection(object):
                     data[-2] = pair[:pair.index(END)]
                     data.pop()
                     break
+
         log.debug("recv: %r", "".join(data))
         return "".join(data)
 
@@ -221,6 +222,11 @@ def serve(host, port, dir):
                 conn.sendall("+OK pypopper file-based pop3 server ready")
                 while True:
                     data = conn.recvall()
+                    if(data == ""):
+                        print "Client disconnected!"
+                        break
+
+
                     print str(data)+"\n"
                     if data.strip():
                         command = data.split(None, 1)[0]
